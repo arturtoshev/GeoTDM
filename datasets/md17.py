@@ -4,10 +4,11 @@ import pickle
 import torch
 from .trajdata import TrajData
 from .trajdataset import TrajDataset
+from torch.utils.data import ConcatDataset
 from utils.misc import MD17_Transform
 
 
-class MD17Traj(TrajDataset):
+class MD17TrajSingle(TrajDataset):
     molecules_to_download_files = {
         'aspirin': 'md17_aspirin.npz',
         'benzene': 'md17_benzene2017.npz',
@@ -17,7 +18,6 @@ class MD17Traj(TrajDataset):
         'salicylic': 'md17_salicylic.npz',
         'toluene': 'md17_toluene.npz',
         'uracil': 'md17_uracil.npz',
-        'all': 'md17_all.npz'
     }
     _lambda = 1.6
     fc = False  # set to true will lead to better performance but slower training/inference
@@ -142,6 +142,21 @@ class MD17Traj(TrajDataset):
         return data
 
 
+def MD17Traj(root, molecule_name, with_h, down_sample_every, span, force_reprocess=False, force_length=None,
+             mode=None, return_index=False, project=False):
+    if molecule_name == 'all':
+        # We exclude benzene from the list
+        curated_list = [m for m in MD17TrajSingle.molecules_to_download_files.keys() if m!= 'benzene']
+        return ConcatDataset([
+            MD17TrajSingle(root, molecule_name, with_h, down_sample_every, span, force_reprocess, force_length,
+                           mode, return_index, project)
+            for molecule_name in curated_list
+        ])
+    else:
+        return MD17TrajSingle(root, molecule_name, with_h, down_sample_every, span, force_reprocess, force_length,
+                              mode, return_index, project)
+
+
 if __name__ == '__main__':
     molecule = 'aspirin'
     dataset = MD17Traj(root='data/md17', molecule_name=molecule, with_h=True, down_sample_every=10, span=30, mode='train')
@@ -153,3 +168,8 @@ if __name__ == '__main__':
     print(len(dataset))
     data = dataset[100]
     print(data)
+
+    molecule = 'all'
+    dataset = MD17Traj(root='data/md17', molecule_name=molecule, with_h=True, down_sample_every=10, span=30, mode='train')
+    print(dataset[100].x)
+    print(len(dataset))
