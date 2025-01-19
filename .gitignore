@@ -172,3 +172,4 @@ cython_debug/
 # MD17_all stuff
 wandb/
 outputs/
+*.err
