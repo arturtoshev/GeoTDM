@@ -17,6 +17,7 @@ class MD17Traj(TrajDataset):
         'salicylic': 'md17_salicylic.npz',
         'toluene': 'md17_toluene.npz',
         'uracil': 'md17_uracil.npz',
+        'all': 'md17_all.npz'
     }
     _lambda = 1.6
     fc = False  # set to true will lead to better performance but slower training/inference

@@ -1,7 +1,7 @@
 data:
   train:
     root: 'data/md17'
-    molecule_name: 'aspirin'
+    molecule_name: 'all'
     down_sample_every: 10
     with_h: true
     span: 30
@@ -9,7 +9,7 @@ data:
 
   val:
     root: 'data/md17'
-    molecule_name: 'aspirin'
+    molecule_name: 'all'
     down_sample_every: 10
     with_h: true
     span: 30
@@ -18,7 +18,7 @@ data:
 
   test:
     root: 'data/md17'
-    molecule_name: 'aspirin'
+    molecule_name: 'all'
     down_sample_every: 10
     with_h: true
     span: 30
@@ -46,7 +46,7 @@ diffusion:
   num_timesteps: 100
 
 train:
-  exp_name: 'aspirin_cond'
+  exp_name: 'all_cond'
   output_base_path: 'outputs/'
   seed: 100
   cond_mask: [[0, 10]]

@@ -27,6 +27,7 @@ device = args.device
 with open(eval_yaml_file, 'r') as f:
     params = yaml.safe_load(f)
 config = EasyDict(params)
+config.wandb.wandb_usr = os.getenv('WANDB_ENTITY')
 cond = config.eval.cond
 train_output_path = os.path.join(config.eval.output_base_path, config.eval.train_exp_name)
 print(f'Train output path: {train_output_path}')

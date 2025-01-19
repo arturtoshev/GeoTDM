@@ -78,11 +78,11 @@ Download the MD17 dataset in `.npz` format from [here](http://www.sgdml.org/#dat
 #### Conditional Generation
 Training, inference, and evaluation (all in one script):
 ```python
-python -m torch.distributed.launch \
+CUDA_VISIBLE_DEVICES=1,2,3,4 torchrun \
     --nproc_per_node=4 \
-    --master_port 16888 \
+    --master_port=16888 \
     experiments/md17_train.py \
-    --train_yaml_file configs/md17_train_cond.yaml
+    --train_yaml_file=configs/md17_train_cond.yaml
 ```
 
 #### Unconditional Generation

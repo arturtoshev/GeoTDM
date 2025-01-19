@@ -3,7 +3,7 @@ import torch.nn as nn
 from tqdm import tqdm
 import yaml
 import argparse
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
 from torch_geometric.nn.pool import global_mean_pool, global_add_pool
 from torch.utils.data.distributed import DistributedSampler
 from torch.nn.parallel import DistributedDataParallel
@@ -34,6 +34,7 @@ def run(rank, world_size, args):
     with open(yaml_file, 'r') as f:
         params = yaml.safe_load(f)
     config = EasyDict(params)
+    config.wandb.wandb_usr = os.getenv('WANDB_ENTITY')
 
     # Save args yaml file
     output_path = os.path.join(config.train.output_base_path, config.train.exp_name)
@@ -358,9 +359,8 @@ def main():
     parser = argparse.ArgumentParser(description='GeoTDM')
     parser.add_argument('--train_yaml_file', type=str, help='path of the train yaml file',
                         default='configs/md17_train.yaml')
-    parser.add_argument('--local_rank', type=int, default=0)
-
     args = parser.parse_args()
+    args.local_rank = int(os.environ["LOCAL_RANK"])
     print(args)
 
     world_size = torch.cuda.device_count()

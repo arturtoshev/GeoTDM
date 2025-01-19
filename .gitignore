@@ -167,3 +167,8 @@ cython_debug/
 /vis/vis_pngs/
 /vis/vis_gifs/
 /vis/vis_samples/
+
+
+# MD17_all stuff
+wandb/
+outputs/
