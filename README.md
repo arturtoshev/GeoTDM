@@ -84,6 +84,16 @@ CUDA_VISIBLE_DEVICES=1,2,3,4 torchrun \
     experiments/md17_train.py \
     --train_yaml_file=configs/md17_train_cond.yaml
 ```
+To evaluate a model trained on the 7 MD17 molecules, we run inference on each of them one by one.
+This can be done by adding `--molecule=<ONE_MOLECULE>` to the end of the code above, e.g.
+```python
+CUDA_VISIBLE_DEVICES=1,2,3,4 torchrun \
+    --nproc_per_node=4 \
+    --master_port=16888 \
+    experiments/md17_train.py \
+    --train_yaml_file=configs/md17_train_cond.yaml \
+    --molecule=aspirin  # aspirin, ethanol, malonaldehyde, naphthalene, salicylic, toluene, uracil
+```
 
 #### Unconditional Generation
 Training:

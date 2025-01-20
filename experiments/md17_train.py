@@ -34,7 +34,12 @@ def run(rank, world_size, args):
     with open(yaml_file, 'r') as f:
         params = yaml.safe_load(f)
     config = EasyDict(params)
-    config.wandb.wandb_usr = os.getenv('WANDB_ENTITY')
+    config.wandb.wandb_usr = os.getenv('WANDB_ENTITY', None)
+    if args.molecule:
+        # If in test-single-molecule mode, override the datasets
+        config.data.train.molecule_name = args.molecule
+        config.data.val.molecule_name = args.molecule
+        config.data.test.molecule_name = args.molecule
 
     # Save args yaml file
     output_path = os.path.join(config.train.output_base_path, config.train.exp_name)
@@ -87,7 +92,7 @@ def run(rank, world_size, args):
         wandb.save('*.txt')
 
     # Start training
-    num_epochs = config.train.num_epochs
+    num_epochs = config.train.num_epochs if not args.molecule else 0
     tot_step = 0
 
     best_val_nll, best_val_mse = 1e10, 1e10
@@ -359,6 +364,9 @@ def main():
     parser = argparse.ArgumentParser(description='GeoTDM')
     parser.add_argument('--train_yaml_file', type=str, help='path of the train yaml file',
                         default='configs/md17_train.yaml')
+    parser.add_argument('--molecule', type=str, 
+                        help='if trained on all MD17 molecules but to be tested on one',
+                        default=None)
     args = parser.parse_args()
     args.local_rank = int(os.environ["LOCAL_RANK"])
     print(args)
