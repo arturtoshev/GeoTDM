@@ -91,7 +91,7 @@ CUDA_VISIBLE_DEVICES=1,2,3,4 torchrun \
     --nproc_per_node=4 \
     --master_port=16888 \
     experiments/md17_train.py \
-    --train_yaml_file=configs/md17_train_cond.yaml \
+    --train_yaml_file=configs/md17_train_cond_all.yaml \
     --molecule=aspirin  # aspirin, ethanol, malonaldehyde, naphthalene, salicylic, toluene, uracil
 ```
 
