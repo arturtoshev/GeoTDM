@@ -145,12 +145,10 @@ class MD17TrajSingle(TrajDataset):
 def MD17Traj(root, molecule_name, with_h, down_sample_every, span, force_reprocess=False, force_length=None,
              mode=None, return_index=False, project=False):
     if molecule_name == 'all':
-        # We exclude benzene from the list
-        curated_list = [m for m in MD17TrajSingle.molecules_to_download_files.keys() if m!= 'benzene']
         return ConcatDataset([
             MD17TrajSingle(root, molecule_name, with_h, down_sample_every, span, force_reprocess, force_length,
                            mode, return_index, project)
-            for molecule_name in curated_list
+            for molecule_name in MD17TrajSingle.molecules_to_download_files.keys()
         ])
     else:
         return MD17TrajSingle(root, molecule_name, with_h, down_sample_every, span, force_reprocess, force_length,

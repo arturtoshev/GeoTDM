@@ -40,6 +40,7 @@ def run(rank, world_size, args):
         config.data.train.molecule_name = args.molecule
         config.data.val.molecule_name = args.molecule
         config.data.test.molecule_name = args.molecule
+        config.train.eval_batch_size = 200
 
     # Save args yaml file
     output_path = os.path.join(config.train.output_base_path, config.train.exp_name)
